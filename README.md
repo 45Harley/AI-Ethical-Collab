@@ -11,7 +11,7 @@ Using AI ethically in fforum collaborations
   AI and technology will be an underlying component and that technically talented individuals
 can help discover how to move toward a more direct democratic form of Government.  
  The initial hope is that these experienced individuals will demonstrate a democratic 
- and progressive approach in the project wich will help lay the processses to carry forward.
+ and progressive approach in the sub-project wich will help lay the processses to carry forward.
  
 
 AI-Ethical-Collab is an initiative designed to **enhance structured discussions** through
