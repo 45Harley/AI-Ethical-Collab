@@ -14,7 +14,7 @@ can help discover how to move toward a more direct democratic form of Government
  and progressive approach in the sub-project wich will help lay the processses to carry forward.
  
 
-AI-Ethical-Collab is an initiative designed to **enhance structured discussions** through
+This "AI-Ethical-Collab" sub-project is an initiative designed to **enhance structured discussions** through
 AI-driven facilitation. Our goal is to create an ethical, transparent, and bias-aware AI that
 assists in **moderation, consensus-building, and decision-making** without dominating conversations.
 
