@@ -7,7 +7,7 @@ Using AI ethically in fforum collaborations
 
  This is the beginning  subset of a much larger endeavor to conceptually envision
  and develop a new Branch called "The People's Branch" that reimagines and evolves
- The US government.  This project was chosen as a starting point in the belief that
+ The US government.  This sub-project was chosen as a starting point in the belief that
   AI and technology will be an underlying component and that technically talented individuals
 can help discover how to move toward a more direct democratic form of Government.  
  The initial hope is that these experienced individuals will demonstrate a democratic 
