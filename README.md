@@ -5,8 +5,8 @@ Using AI ethically in fforum collaborations
 
 ## 🌍 About the Project
 
-This is the beginning  subset of a much larger endeavor to conceptually envision anddevelop a new Branch called The People's Branch that reimagines and evolves The US government.  This project was chosen as a starting ppoint in the belief that AI and technology will be anunderlying component and that technically talented individuals can help discover how to move toward a more direct democratic form of Government.
-
+This is the beginning  subset of a much larger endeavor to conceptually envision and develop a new Branch called The People's Branch that reimagines and evolves The US government.  This project was chosen as a starting point in the belief that AI and technology will be an underlying component and that technically talented individuals can help discover how to move toward a more direct democratic form of Government.
+ 
 
 AI-Ethical-Collab is an initiative designed to **enhance structured discussions** through AI-driven facilitation. Our goal is to create an ethical, transparent, and bias-aware AI that assists in **moderation, consensus-building, and decision-making** without dominating conversations.
 
