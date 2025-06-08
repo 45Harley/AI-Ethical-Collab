@@ -32,7 +32,7 @@ assists in **moderation, consensus-building, and decision-making** without domin
 - **Interactive Governance Frameworks** – Microsoft Responsible AI Toolkit.
 
 ## 🚀 How to Contribute
-1. **Join the Discussions** – Help shape AI ethical frameworks in our [GitHub Discussions](#).
+1. **Join the Discussions** – Help shape AI ethical frameworks in our [GitHub Discussions]( [Join the Discussions](https://github.com/45Harley/AI-Ethical-Collab/discussions) – Help shape AI ethical frameworks in our GitHub Discussions.).
 2. **Test AI Moderation** – Participate in sandbox trials to refine bias detection.
 3. **Improve AI Prompting** – Suggest refinements to AI engagement strategies.
 4. **Share Research** – Add ethical AI studies and governance insights to `/docs`.
