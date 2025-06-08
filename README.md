@@ -16,7 +16,7 @@ can help discover how to move toward a more direct democratic form of Government
 
 This "AI-Ethical-Collab" sub-project is an initiative designed to **enhance structured discussions** through
 AI-driven facilitation. Our goal is to create an ethical, transparent, and bias-aware AI that
-assists in **moderation, consensus-building, and decision-making** without dominating conversations.  These AI assisted collaborations will be critical for all elements of whole evolution including the startup.  Engaging technnoligists, innovators, and across-the-board citizens in the evolution.
+assists in **moderation, consensus-building, and decision-making** without dominating conversations.  These AI assisted collaborations will be critical for all elements of the whole evolution including the startup.  Engaging technnoligists, innovators, and across-the-board citizens in the evolution.
 
 ## ⚡ Key Features
 - **AI-Assisted Moderation** – Ensures fairness and inclusivity in discussions.
