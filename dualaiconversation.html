@@ -8,17 +8,23 @@
     .response { margin: 10px 0; padding: 10px; border: 1px solid #444; }
     .controls { margin-top: 20px; }
     a { color: #1e90ff; }
+    label, select { color: #fff; }
   </style>
 </head>
 <body>
   <h1>AI-Ethical-Collab Discussion</h1>
+  <label for="categorySelect">Discussion Category:</label>
+  <select id="categorySelect" disabled>
+    <option>Authenticate to load categories...</option>
+  </select>
+  <br>
   <input id="subject" type="text" placeholder="Enter a topic">
   <button id="start">Start Discussion</button>
   <div id="conversation"></div>
 
   <!-- Authentication -->
   <div class="controls" style="display: none;">
-    <input id="githubToken" type="!44Dalesmith45!" placeholder="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">
+    <input id="githubToken" type="password" placeholder="GitHub Personal Access Token">
     <button id="auth">Authenticate</button>
     <button id="pause">Pause</button>
     <button id="changeSubject">Change Subject</button>
@@ -37,20 +43,55 @@
     const exitButton = document.getElementById('exit');
     const githubTokenInput = document.getElementById('githubToken');
     const authButton = document.getElementById('auth');
+    const categorySelect = document.getElementById('categorySelect');
 
     let paused = false;
     let currentSubject = "";
-    let subjectCounter = 1; // Auto-incrementing subject ID
+    let subjectCounter = 1;
     let githubToken = "";
+    let categoryId = "";
+    let categories = [];
 
-    authButton.addEventListener('click', () => {
+    authButton.addEventListener('click', async () => {
       githubToken = githubTokenInput.value;
       if (!githubToken) {
         alert("Please enter your GitHub token!");
         return;
       }
-      controlsDiv.style.display = "block"; // Show review buttons
-      alert("Authenticated successfully!");
+      controlsDiv.style.display = "block";
+      await loadCategories();
+      alert("Authenticated successfully! Select a category before starting a discussion.");
+    });
+
+    async function loadCategories() {
+      categorySelect.disabled = true;
+      categorySelect.innerHTML = `<option>Loading...</option>`;
+      try {
+        const response = await fetch("https://api.github.com/repos/45Harley/AI-Ethical-Collab/discussion-categories", {
+          headers: {
+            "Authorization": `token ${githubToken}`,
+            "Accept": "application/vnd.github.v3+json"
+          }
+        });
+        if (!response.ok) throw new Error("Failed to fetch categories.");
+        categories = await response.json();
+        categorySelect.innerHTML = "";
+        categories.forEach(cat => {
+          const option = document.createElement("option");
+          option.value = cat.id;
+          option.textContent = cat.name;
+          categorySelect.appendChild(option);
+        });
+        categorySelect.disabled = false;
+        categoryId = categorySelect.value;
+      } catch (e) {
+        categorySelect.innerHTML = `<option>Error loading categories</option>`;
+        alert("Error loading discussion categories.");
+      }
+    }
+
+    categorySelect.addEventListener('change', () => {
+      categoryId = categorySelect.value;
     });
 
     startButton.addEventListener('click', async () => {
@@ -58,11 +99,17 @@
         alert("Please authenticate first!");
         return;
       }
+      if (!categorySelect.value) {
+        alert("Please select a discussion category!");
+        return;
+      }
+      if (!subjectInput.value) {
+        alert("Please enter a topic!");
+        return;
+      }
 
       currentSubject = `${subjectInput.value}-${String(subjectCounter).padStart(3, '0')}`;
-      if (!currentSubject) return alert("Please enter a topic!");
-
-      controlsDiv.style.display = "block"; // Show review buttons
+      controlsDiv.style.display = "block";
       await fetchAIResponses(currentSubject);
     });
 
@@ -89,23 +136,22 @@
 
     exitButton.addEventListener('click', () => {
       conversationDiv.innerHTML += `<div class='response'><strong>Session Ended.</strong></div>`;
-      controlsDiv.style.display = "none"; // Hide controls
-      subjectInput.value = ""; // Clear input field
+      controlsDiv.style.display = "none";
+      subjectInput.value = "";
     });
 
     async function fetchAIResponses(subject) {
       if (paused) return;
-      
       const metaResponse = await callMetaAI(subject);
       const copilotResponse = await callCopilot(subject);
 
-      const metadata = `**Metadata:**\n- **Timestamp:** ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York', hourCycle: 'h23' })} EST\n- **Subject ID:** ${subject}\n- **User:** 45Harley\n- **Repo:** AI-Ethical-Collab\n`;
-      
-      const discussionContent = `**AI Insights:**\n- **Meta AI:** ${metaResponse}\n- **Copilot:** ${copilotResponse}\n\n${metadata}\n\n[View Previous Discussions](https://github.com/AI-Ethical-Collab/discussions/${subjectCounter - 1})`;
+      const metadata = `**Metadata:**\n- **Timestamp:** ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York', hourCycle: 'h23' })} EST\n- **Subject ID:** ${subject}\n- **User:** 45Harley`;
+
+      const discussionContent = `**AI Insights:**\n- **Meta AI:** ${metaResponse}\n- **Copilot:** ${copilotResponse}\n\n${metadata}\n\n[View Previous Discussions](https://github.com/45Harley/AI-Ethical-Collab/discussions)`;
 
       conversationDiv.innerHTML += `<div class='response'><strong>Meta AI:</strong> ${metaResponse}</div>`;
       conversationDiv.innerHTML += `<div class='response'><strong>Copilot:</strong> ${copilotResponse}</div>`;
-      
+
       await createGitHubDiscussion(subject, discussionContent);
     }
 
@@ -120,6 +166,10 @@
     }
 
     async function createGitHubDiscussion(title, body) {
+      if (!categoryId) {
+        alert("No discussion category selected!");
+        return;
+      }
       const response = await fetch("https://api.github.com/repos/45Harley/AI-Ethical-Collab/discussions", {
         method: "POST",
         headers: {
@@ -127,13 +177,14 @@
           "Accept": "application/vnd.github.v3+json",
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ title, body, category_id: "DICUSSION_CATEGORY_ID" }) // Replace with actual category ID
+        body: JSON.stringify({ title, body, category_id: categoryId })
       });
 
       if (response.ok) {
         alert(`Discussion '${title}' created successfully!`);
       } else {
-        alert("Failed to create discussion. Check your token and permissions.");
+        const err = await response.json();
+        alert("Failed to create discussion. " + (err.message || "Check your token and permissions."));
       }
     }
   </script>
