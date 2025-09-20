@@ -1,0 +1,64 @@
+{
+  "Truth": {
+    "positive": [
+      "truth"
+    ],
+    "negative": [
+      "lie",
+      "error",
+      "mistake"
+    ]
+  },
+  "Love": {
+    "positive": [
+      "Love"
+    ],
+    "negative": [
+      "hatred"
+    ]
+  },
+  "Mind": {
+    "positive": [
+      "understanding"
+    ],
+    "negative": [
+      "ignorance",
+      "confusion"
+    ]
+  },
+  "Soul": {
+    "positive": [
+      "soulful"
+    ],
+    "negative": [
+      "enpty"
+    ]
+  },
+  "Spirit": {
+    "positive": [
+      "freedom"
+    ],
+    "negative": [
+      "fear"
+    ]
+  },
+  "Principle": {
+    "positive": [
+      "justice",
+      "law"
+    ],
+    "negative": [
+      "corruption",
+      "injustice",
+      "chaos"
+    ]
+  },
+  "Life": {
+    "positive": [
+      "vitality"
+    ],
+    "negative": [
+      "death"
+    ]
+  }
+}
