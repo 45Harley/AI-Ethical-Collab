@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expression Analysis - Choose Your Approach</title>
+    <script>
+        // Easy editing: Update this URL constant for version changes
+        const BASE_URL = 'https://45harley.github.io/AI-Ethical-Collab/';
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 0;
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: 300;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: #a0a0a0;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .intro-section {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(15px);
+            text-align: center;
+        }
+
+        .intro-section h2 {
+            color: #4fc3f7;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-section p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .approaches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .approach-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .approach-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-color);
+            opacity: 0.8;
+        }
+
+        .approach-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .approach-card.technical {
+            --accent-color: #2196f3;
+        }
+
+        .approach-card.personal {
+            --accent-color: #9c27b0;
+        }
+
+        .approach-card.academic {
+            --accent-color: #ff9800;
+        }
+
+        .approach-card.spiritual {
+            --accent-color: #e91e63;
+        }
+
+        .approach-card.christian-science {
+            --accent-color: #ffd700;
+        }
+
+        .approach-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .approach-audience {
+            font-size: 1rem;
+            color: #a0a0a0;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .approach-description {
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .use-cases {
+            margin-bottom: 1.5rem;
+        }
+
+        .use-cases h4 {
+            color: var(--accent-color);
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .use-cases ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .use-cases li {
+            padding: 0.3rem 0;
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        .use-cases li:before {
+            content: "→ ";
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .approach-link {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-color));
+            filter: brightness(0.9);
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .approach-link:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .footer-note {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .approaches-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">Expression Analysis</h1>
+            <p class="subtitle">Systematic frameworks for understanding human experience</p>
+        </div>
+
+        <div class="intro-section">
+            <h2>Choose Your Analytical Approach</h2>
+            <p>The same powerful toolkit, five different perspectives. Each approach uses identical functionality but frames the analysis through different conceptual lenses. Select the framework that resonates with your needs and worldview.</p>
+        </div>
+
+        <div class="approaches-grid">
+            <div class="approach-card technical" onclick="window.open(BASE_URL + 'index0.html', '_blank')">
+                <h3 class="approach-title">Technical Data Analysis</h3>
+                <p class="approach-audience">For developers, analysts, researchers</p>
+                <p class="approach-description">Straightforward JSON data manipulation with advanced editing capabilities. No conceptual framework - just powerful tools for organizing and analyzing structured data.</p>
+                <div class="use-cases">
+                    <h4>Use Cases:</h4>
+                    <ul>
+                        <li>Data cleaning and organization</li>
+                        <li>Content categorization projects</li>
+                        <li>Research data management</li>
+                        <li>Custom dataset development</li>
+                    </ul>
+                </div>
+                <a href="#" class="approach-link">Access Technical Tools</a>
+            </div>
+
+            <div class="approach-card personal" onclick="window.open(BASE_URL + 'index1.html', '_blank')">
+                <h3 class="approach-title">Personal Development</h3>
+                <p class="approach-audience">For individuals seeking self-awareness</p>
+                <p class="approach-description">Expand your perceptual abilities by systematically analyzing expressions across all sensory channels. Develop enhanced awareness of subtle patterns in human behavior and communication.</p>
+                <div class="use-cases">
+                    <h4>Use Cases:</h4>
+                    <ul>
+                        <li>Self-reflection and growth</li>
+                        <li>Emotional intelligence development</li>
+                        <li>Communication pattern analysis</li>
+                        <li>Mindfulness practice enhancement</li>
+                    </ul>
+                </div>
+                <a href="#" class="approach-link">Start Personal Analysis</a>
+            </div>
+
+            <div class="approach-card academic" onclick="window.open(BASE_URL + 'index2.html', '_blank')">
+                <h3 class="approach-title">Academic Research</h3>
+                <p class="approach-audience">For scholars, students, professionals</p>
+                <p class="approach-description">Comprehensive analytical framework for studying human civilization and culture. Examine how fundamental principles manifest across art, science, law, technology, and social structures.</p>
+                <div class="use-cases">
+                    <h4>Use Cases:</h4>
+                    <ul>
+                        <li>Cultural studies research</li>
+                        <li>Sociological analysis</li>
+                        <li>Educational curriculum development</li>
+                        <li>Cross-disciplinary studies</li>
+                    </ul>
+                </div>
+                <a href="#" class="approach-link">Enter Research Mode</a>
+            </div>
+
+            <div class="approach-card spiritual" onclick="window.open(BASE_URL + 'index3.html', '_blank')">
+                <h3 class="approach-title">Philosophical Inquiry</h3>
+                <p class="approach-audience">For spiritual seekers, philosophers</p>
+                <p class="approach-description">Universal framework for understanding how fundamental principles express through all human experience. Explore the deeper meanings behind surface phenomena across multiple wisdom traditions.</p>
+                <div class="use-cases">
+                    <h4>Use Cases:</h4>
+                    <ul>
+                        <li>Spiritual development practices</li>
+                        <li>Philosophical study</li>
+                        <li>Wisdom tradition exploration</li>
+                        <li>Contemplative analysis</li>
+                    </ul>
+                </div>
+                <a href="#" class="approach-link">Begin Philosophical Study</a>
+            </div>
+
+            <div class="approach-card christian-science" onclick="window.open(BASE_URL + 'index4.html', '_blank')">
+                <h3 class="approach-title">Christian Science Application</h3>
+                <p class="approach-audience">For Christian Science students and practitioners</p>
+                <p class="approach-description">Spiritual discernment tool based on Mary Baker Eddy's metaphysics. Distinguish divine expressions from material misconceptions to support demonstration of Christian Science principles.</p>
+                <div class="use-cases">
+                    <h4>Use Cases:</h4>
+                    <ul>
+                        <li>Spiritual discernment practice</li>
+                        <li>Progress in demonstration</li>
+                        <li>Study of divine nature</li>
+                        <li>Healing work support</li>
+                    </ul>
+                </div>
+                <a href="#" class="approach-link">Practice Divine Analysis</a>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            <p>All versions use identical core functionality - the difference lies in the interpretive framework and intended application. Your data and insights remain completely private across all approaches.</p>
+        </div>
+    </div>
+
+    <script>
+        // Add click handlers for the cards
+        document.querySelectorAll('.approach-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (e.target.tagName !== 'A') {
+                    this.querySelector('.approach-link').click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
