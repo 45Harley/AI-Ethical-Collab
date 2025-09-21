@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Rating Tool</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #181818 0%, #232323 50%, #181818 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .title {
+            font-size: 2.4rem;
+            font-weight: 300;
+            color: #fff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255,255,255,0.12);
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: #a0a0a0;
+            opacity: 0.8;
+        }
+        .input-block {
+            margin: 1.5rem 0;
+            background: rgba(255,255,255,0.04);
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            flex: 1 1 220px;
+            min-width: 220px;
+        }
+        label {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #90caf9;
+        }
+        input[type="text"] {
+            background: rgba(79,195,247,0.1);
+            border: 1px solid #4fc3f7;
+            border-radius: 8px;
+            padding: 0.5rem;
+            font-size: 1rem;
+            color: #fff;
+        }
+        textarea {
+            background: rgba(156,39,176,0.08);
+            border: 1px solid #9c27b0;
+            border-radius: 8px;
+            padding: 0.6rem;
+            font-size: 1rem;
+            color: #fff;
+            resize: vertical;
+            min-height: 80px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .file-btn {
+            background: linear-gradient(135deg,#4fc3f7,#29b6f6);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem 0;
+            box-shadow: 0 4px 15px rgba(79,195,247,0.15);
+        }
+        .file-btn:hover {
+            background: linear-gradient(135deg,#29b6f6,#4fc3f7);
+        }
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px,1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .principle-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 16px;
+            padding: 1.3rem;
+            position: relative;
+            transition: all 0.25s;
+        }
+        .principle-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent-color,#90caf9);
+            margin-bottom: 1.3rem;
+            text-align: center;
+        }
+        .aspects {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .aspect {
+            background: rgba(0,0,0,0.18);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+        .aspect-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .positive .aspect-title {
+            color: #4caf50;
+        }
+        .negative .aspect-title {
+            color: #f44336;
+        }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .tag {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.11);
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.95rem;
+            color: #e0e0e0;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+        }
+        .tag.selected {
+            background: rgba(76,175,80,0.22);
+            border-color: #4caf50;
+            color: #4caf50;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(76,175,80,0.17);
+        }
+        .tag.selected.negative {
+            background: rgba(244,67,54,0.22);
+            border-color: #f44336;
+            color: #f44336;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(244,67,54,0.17);
+        }
+        .save-btn {
+            display: block;
+            margin: 0 auto;
+            background: linear-gradient(135deg,#4caf50,#45a049);
+            border: none;
+            border-radius: 25px;
+            padding: 0.9rem 2rem;
+            color: white;
+            font-size: 1.15rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.25);
+        }
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76,175,80,0.34);
+        }
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.6rem;
+            }
+            .principles-grid {
+                grid-template-columns: 1fr;
+            }
+            .input-block {
+                flex-direction: column;
+                gap: 0.8rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1 class="title">Object Rating Tool</h1>
+        <p class="subtitle">Select traits to rate an object. Load traits file, enter details, choose traits, and save your rating.</p>
+    </div>
+    <div class="input-block">
+        <div class="input-group">
+            <label for="typeInput">Type</label>
+            <input type="text" id="typeInput" placeholder="e.g. politician, organization, policy">
+        </div>
+        <div class="input-group">
+            <label for="nameInput">Object Name</label>
+            <input type="text" id="nameInput" placeholder="e.g. Gavin Newsom">
+        </div>
+        <div class="input-group" style="flex:2">
+            <label for="commentsInput">Comments (optional)</label>
+            <textarea id="commentsInput" placeholder="Paste or write comments here..."></textarea>
+        </div>
+        <div class="input-group" style="flex:1">
+            <label>Load Traits File</label>
+            <input type="file" id="traitsFileInput" accept=".json">
+            <button class="file-btn" onclick="document.getElementById('traitsFileInput').click()">Choose Traits JSON</button>
+            <span id="traitsFileName" style="color:#4fc3f7;font-size:0.9rem;"></span>
+        </div>
+    </div>
+    <div id="principlesGrid" class="principles-grid"></div>
+    <button class="save-btn" id="saveBtn" style="display:none;">💾 Save Rating JSON</button>
+</div>
+
+<script>
+let traitsData = {};
+let selectedTraits = {}; // { principle: {positive:[], negative:[]} }
+
+document.getElementById('traitsFileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+        try {
+            const json = JSON.parse(ev.target.result);
+            if (!isValidStructure(json)) {
+                alert('Invalid traits JSON. Please use a file structured like expressions1.html output.');
+                return;
+            }
+            traitsData = json;
+            document.getElementById('traitsFileName').textContent = file.name;
+            setupTraitSelection();
+        } catch (err) {
+            alert('Error parsing JSON: ' + err.message);
+        }
+    };
+    reader.readAsText(file);
+});
+
+function isValidStructure(json) {
+    if (typeof json !== 'object' || json === null) return false;
+    for (const principle of Object.keys(json)) {
+        if (!json[principle].positive || !Array.isArray(json[principle].positive)) return false;
+        if (!json[principle].negative || !Array.isArray(json[principle].negative)) return false;
+    }
+    return true;
+}
+
+function setupTraitSelection() {
+    selectedTraits = {};
+    for (const principle in traitsData) {
+        selectedTraits[principle] = { positive: [], negative: [] };
+    }
+    renderPrinciples();
+    document.getElementById('saveBtn').style.display = 'block';
+}
+
+function renderPrinciples() {
+    const grid = document.getElementById('principlesGrid');
+    grid.innerHTML = '';
+    if (Object.keys(traitsData).length === 0) {
+        grid.innerHTML = '<p style="text-align:center;color:#a0a0a0;">Load a traits JSON file to begin.</p>';
+        return;
+    }
+    Object.entries(traitsData).forEach(([principle, data]) => {
+        const card = document.createElement('div');
+        card.className = 'principle-card';
+        card.style.setProperty('--accent-color', getAccentColor(principle));
+        card.innerHTML = `
+            <h2 class="principle-title">${principle}</h2>
+            <div class="aspects">
+                <div class="aspect positive">
+                    <div class="aspect-title">Positive</div>
+                    <div class="tags"></div>
+                </div>
+                <div class="aspect negative">
+                    <div class="aspect-title">Negative</div>
+                    <div class="tags"></div>
+                </div>
+            </div>
+        `;
+        // Positive tags
+        const posTags = card.querySelector('.positive .tags');
+        data.positive.forEach(term => {
+            const termStr = typeof term === 'string' ? term : term.term;
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.textContent = termStr;
+            if (selectedTraits[principle].positive.includes(termStr)) tag.classList.add('selected');
+            tag.onclick = () => {
+                const arr = selectedTraits[principle].positive;
+                if (arr.includes(termStr)) {
+                    arr.splice(arr.indexOf(termStr),1);
+                    tag.classList.remove('selected');
+                } else {
+                    arr.push(termStr);
+                    tag.classList.add('selected');
+                }
+            };
+            posTags.appendChild(tag);
+        });
+        // Negative tags
+        const negTags = card.querySelector('.negative .tags');
+        data.negative.forEach(term => {
+            const termStr = typeof term === 'string' ? term : term.term;
+            const tag = document.createElement('span');
+            tag.className = 'tag negative';
+            tag.textContent = termStr;
+            if (selectedTraits[principle].negative.includes(termStr)) tag.classList.add('selected', 'negative');
+            tag.onclick = () => {
+                const arr = selectedTraits[principle].negative;
+                if (arr.includes(termStr)) {
+                    arr.splice(arr.indexOf(termStr),1);
+                    tag.classList.remove('selected','negative');
+                } else {
+                    arr.push(termStr);
+                    tag.classList.add('selected','negative');
+                }
+            };
+            negTags.appendChild(tag);
+        });
+        grid.appendChild(card);
+    });
+}
+
+function getAccentColor(name) {
+    switch(name) {
+        case 'Truth': return '#4fc3f7';
+        case 'Love': return '#e91e63';
+        case 'Mind': return '#9c27b0';
+        case 'Soul': return '#673ab7';
+        case 'Spirit': return '#ff9800';
+        case 'Principle': return '#4caf50';
+        case 'Life': return '#f44336';
+        default: return '#90caf9';
+    }
+}
+
+document.getElementById('saveBtn').onclick = function() {
+    const type = document.getElementById('typeInput').value.trim();
+    const name = document.getElementById('nameInput').value.trim();
+    const comments = document.getElementById('commentsInput').value.trim();
+    if (!type || !name) {
+        alert('Please enter both Type and Object Name.');
+        return;
+    }
+    // Build ratings object
+    const ratings = {};
+    let totalTraitsSelected = 0;
+    for (const principle in selectedTraits) {
+        ratings[principle] = {
+            positive: [...selectedTraits[principle].positive],
+            negative: [...selectedTraits[principle].negative]
+        };
+        totalTraitsSelected += ratings[principle].positive.length + ratings[principle].negative.length;
+    }
+    // Output JSON
+    const out = {
+        Type: type,
+        objectName: name,
+        comments: comments,
+        ratings: ratings,
+        timestamp: new Date().toISOString(),
+        metadata: {
+            totalTraitsSelected,
+            ratingVersion: "1.0"
+        }
+    };
+    const filename = `${name.replace(/\s+/g,'-').toLowerCase()}-rating.json`;
+    const blob = new Blob([JSON.stringify(out,null,2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{document.body.removeChild(a);},100);
+};
+
+</script>
+</body>
+</html>
