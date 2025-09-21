@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expressions Analysis Toolkit</title>
+    <script>
+        // Easy editing: Update this URL constant for version changes
+        const CURRENT_TOOL_URL = 'https://45harley.github.io/AI-Ethical-Collab/expressions1.html';
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 3rem 0;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #a0a0a0;
+            opacity: 0.8;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #4fc3f7;
+            margin-bottom: 1rem;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .concept-intro {
+            background: rgba(156, 39, 176, 0.1);
+            border: 1px solid rgba(156, 39, 176, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .concept-intro h3 {
+            color: #e91e63;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .perception-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .perception-type {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .perception-type h4 {
+            color: #9c27b0;
+            margin-bottom: 0.5rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feature h3 {
+            color: #9c27b0;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .launch-section {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .launch-btn {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            border: none;
+            border-radius: 30px;
+            padding: 1.2rem 3rem;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .launch-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
+        }
+
+        .url-display {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #90caf9;
+            word-break: break-all;
+        }
+
+        .coming-soon {
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid rgba(255, 152, 0, 0.2);
+        }
+
+        .coming-soon h2 {
+            color: #ff9800;
+        }
+
+        .workflow {
+            background: rgba(156, 39, 176, 0.1);
+            border: 1px solid rgba(156, 39, 176, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .workflow h3 {
+            color: #e91e63;
+            margin-bottom: 1rem;
+        }
+
+        .workflow ol {
+            margin-left: 1.5rem;
+        }
+
+        .workflow li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .features, .perception-types {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">Expressions Analysis Toolkit</h1>
+            <p class="subtitle">Expand your perception through systematic expression analysis</p>
+        </div>
+
+        <div class="concept-intro">
+            <h3>Understanding Expressions</h3>
+            <p>Everything you perceive is an expression - every thought, word, action, emotion, and sensation expresses something fundamental about Mind, Truth, Love, Life, Soul, Spirit, and Principle. This toolkit helps you recognize and analyze these expressions across all your perceptual channels.</p>
+            
+            <div class="perception-types">
+                <div class="perception-type">
+                    <h4>Seeing</h4>
+                    <p>Visual expressions in appearance, gestures, environments</p>
+                </div>
+                <div class="perception-type">
+                    <h4>Hearing</h4>
+                    <p>Auditory expressions in speech, tone, music, sounds</p>
+                </div>
+                <div class="perception-type">
+                    <h4>Physical Feeling</h4>
+                    <p>Tactile and bodily sensations as expressions</p>
+                </div>
+                <div class="perception-type">
+                    <h4>Mental Feeling</h4>
+                    <p>Emotional and psychological states as expressions</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What</h2>
+            <p>The Expressions Editor helps you systematically analyze and categorize expressions within fundamental categories. Organize positive and negative expressions while building detailed research notes to expand your perceptual awareness and understanding.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>Preset Collections</h3>
+                    <p>Curated expressions datasets for immediate analysis</p>
+                </div>
+                <div class="feature">
+                    <h3>Custom Uploads</h3>
+                    <p>Import your own expression data files</p>
+                </div>
+                <div class="feature">
+                    <h3>Deep Note-Taking</h3>
+                    <p>Substantial explanatory content with modal editing</p>
+                </div>
+                <div class="feature">
+                    <h3>Perceptual Tools</h3>
+                    <p>Search, sort, and organize to enhance recognition</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Why</h2>
+            <p>By systematically examining expressions within each fundamental category, you develop enhanced perceptual abilities. You begin to notice subtle expressions you previously missed - recognizing expressions of truth in body language, expressions of life in environmental details, or expressions of mind in conversational patterns.</p>
+            <p>The tool serves as a framework for expanding awareness, helping you perceive the rich spectrum of expressions present in every experience across all sensory and cognitive channels.</p>
+        </div>
+
+        <div class="section">
+            <h2>Who</h2>
+            <p>Designed for anyone seeking to expand their perceptual awareness - researchers, students, therapists, coaches, spiritual practitioners, or individuals engaged in personal development. No technical expertise required.</p>
+            <p>Your exploration remains completely private - all information stays on your computer with no external storage or tracking.</p>
+        </div>
+
+        <div class="section coming-soon">
+            <h2>Coming Soon - Rating Tool</h2>
+            <p>Quantitative assessment capabilities to complement your expression analysis:</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>Expression Intensity</h3>
+                    <p>Rate expressions for strength, clarity, or frequency</p>
+                </div>
+                <div class="feature">
+                    <h3>Comparative Analysis</h3>
+                    <p>Side-by-side evaluation of expression patterns</p>
+                </div>
+                <div class="feature">
+                    <h3>Perceptual Mapping</h3>
+                    <p>Visualize expression relationships and patterns</p>
+                </div>
+                <div class="feature">
+                    <h3>Integrated Reports</h3>
+                    <p>Combine qualitative notes with quantitative ratings</p>
+                </div>
+            </div>
+
+            <div class="workflow">
+                <h3>Complete Analysis Workflow</h3>
+                <ol>
+                    <li><strong>Analyze</strong> expressions with the Expressions Editor</li>
+                    <li><strong>Rate</strong> their significance with the Rating Tool</li>
+                    <li><strong>Export</strong> comprehensive insights combining perception and measurement</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="launch-section">
+            <a href="#" onclick="window.open(CURRENT_TOOL_URL, '_blank')" class="launch-btn">
+                Launch Expressions Editor
+            </a>
+            
+            <div class="url-display">
+                <span>Current Tool: </span><span id="currentUrl"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Display the current URL for easy reference
+        document.getElementById('currentUrl').textContent = CURRENT_TOOL_URL;
+    </script>
+</body>
+</html>

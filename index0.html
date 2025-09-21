@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expressions Analysis Toolkit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 3rem 0;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #a0a0a0;
+            opacity: 0.8;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #4fc3f7;
+            margin-bottom: 1rem;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feature h3 {
+            color: #9c27b0;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .launch-section {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .launch-btn {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            border: none;
+            border-radius: 30px;
+            padding: 1.2rem 3rem;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .launch-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
+        }
+
+        .url-display {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #90caf9;
+            word-break: break-all;
+        }
+
+        .coming-soon {
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid rgba(255, 152, 0, 0.2);
+        }
+
+        .coming-soon h2 {
+            color: #ff9800;
+        }
+
+        .workflow {
+            background: rgba(156, 39, 176, 0.1);
+            border: 1px solid rgba(156, 39, 176, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .workflow h3 {
+            color: #e91e63;
+            margin-bottom: 1rem;
+        }
+
+        .workflow ol {
+            margin-left: 1.5rem;
+        }
+
+        .workflow li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">Expressions Analysis Toolkit</h1>
+            <p class="subtitle">Comprehensive tools for trait analysis and evaluation</p>
+        </div>
+
+        <div class="section">
+            <h2>What</h2>
+            <p>The Expressions Editor is a specialized tool for analyzing and categorizing traits, characteristics, and expressions. Organize terms into positive and negative categories while building detailed research notes for comprehensive analysis.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>Preset Datasets</h3>
+                    <p>Ready-to-use collections for immediate analysis</p>
+                </div>
+                <div class="feature">
+                    <h3>Custom Uploads</h3>
+                    <p>Import your own JSON data files</p>
+                </div>
+                <div class="feature">
+                    <h3>Rich Note-Taking</h3>
+                    <p>Substantial explanatory content with modal editing</p>
+                </div>
+                <div class="feature">
+                    <h3>Smart Tools</h3>
+                    <p>Search, sort, and organize with ease</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Why</h2>
+            <p>Systematic trait analysis supports deeper understanding of characteristics and their relationships. By organizing expressions into meaningful categories and documenting insights, you create a structured foundation for research, self-reflection, or educational analysis.</p>
+            <p>The detailed note-taking capability enables you to capture complex thoughts, examples, and connections that emerge during your analysis process.</p>
+        </div>
+
+        <div class="section">
+            <h2>Who</h2>
+            <p>Designed for researchers, students, therapists, coaches, and anyone engaged in systematic trait analysis. No technical expertise required - simply point, click, and analyze.</p>
+            <p>Your data remains completely private - all information stays on your computer with no external storage or tracking.</p>
+        </div>
+
+        <div class="section coming-soon">
+            <h2>Coming Soon - Rating Tool</h2>
+            <p>Quantitative assessment capabilities to complement your qualitative analysis:</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>Numerical Scoring</h3>
+                    <p>Rate traits for intensity, importance, or frequency</p>
+                </div>
+                <div class="feature">
+                    <h3>Comparative Analysis</h3>
+                    <p>Side-by-side evaluation of different trait sets</p>
+                </div>
+                <div class="feature">
+                    <h3>Data Visualization</h3>
+                    <p>Charts and graphs revealing rating patterns</p>
+                </div>
+                <div class="feature">
+                    <h3>Integrated Reports</h3>
+                    <p>Combine notes and ratings for comprehensive analysis</p>
+                </div>
+            </div>
+
+            <div class="workflow">
+                <h3>Complete Analysis Workflow</h3>
+                <ol>
+                    <li><strong>Analyze</strong> traits with the Expressions Editor</li>
+                    <li><strong>Rate</strong> their significance with the Rating Tool</li>
+                    <li><strong>Export</strong> comprehensive reports combining qualitative notes and quantitative ratings</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="launch-section">
+            <a href="https://45harley.github.io/AI-Ethical-Collab/expressions1.html" class="launch-btn">
+                Launch Expressions Editor
+            </a>
+            
+            <div class="url-display">
+                Current Tool: https://45harley.github.io/AI-Ethical-Collab/expressions1.html
+            </div>
+        </div>
+    </div>
+</body>
+</html>

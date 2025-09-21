@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divine Expression Analysis Toolkit</title>
+    <script>
+        // Easy editing: Update this URL constant for version changes
+        const CURRENT_TOOL_URL = 'https://45harley.github.io/AI-Ethical-Collab/expressions1.html';
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 3rem 0;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #a0a0a0;
+            opacity: 0.8;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #4fc3f7;
+            margin-bottom: 1rem;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .divine-framework {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .divine-framework h3 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .scripture-quote {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #ffd700;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .scripture-citation {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            margin-top: 1rem;
+        }
+
+        .seven-attributes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .attribute {
+            text-align: center;
+            padding: 0.8rem 0.5rem;
+            background: rgba(255, 215, 0, 0.15);
+            border-radius: 6px;
+            font-weight: 600;
+            color: #ffd700;
+            font-size: 0.9rem;
+        }
+
+        .spiritual-discernment {
+            background: rgba(156, 39, 176, 0.15);
+            border: 1px solid rgba(156, 39, 176, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .spiritual-discernment h4 {
+            color: #e91e63;
+            margin-bottom: 1rem;
+        }
+
+        .discernment-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .positive-expression, .negative-expression {
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .positive-expression {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .positive-expression h5 {
+            color: #4caf50;
+            margin-bottom: 0.5rem;
+        }
+
+        .negative-expression {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .negative-expression h5 {
+            color: #f44336;
+            margin-bottom: 0.5rem;
+        }
+
+        .human-expressions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .expression-domain {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .expression-domain h4 {
+            color: #ff9800;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .expression-domain p {
+            font-size: 0.9rem;
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feature h3 {
+            color: #9c27b0;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature p {
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .launch-section {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .launch-btn {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            border: none;
+            border-radius: 30px;
+            padding: 1.2rem 3rem;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .launch-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
+        }
+
+        .url-display {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #90caf9;
+            word-break: break-all;
+        }
+
+        .coming-soon {
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid rgba(255, 152, 0, 0.2);
+        }
+
+        .coming-soon h2 {
+            color: #ff9800;
+        }
+
+        .workflow {
+            background: rgba(156, 39, 176, 0.1);
+            border: 1px solid rgba(156, 39, 176, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .workflow h3 {
+            color: #e91e63;
+            margin-bottom: 1rem;
+        }
+
+        .workflow ol {
+            margin-left: 1.5rem;
+        }
+
+        .workflow li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .features, .human-expressions, .seven-attributes, .discernment-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">Divine Expression Analysis Toolkit</h1>
+            <p class="subtitle">Spiritual discernment through systematic expression analysis</p>
+        </div>
+
+        <div class="divine-framework">
+            <h3>The Divine Nature Framework</h3>
+            <p>Based on Christian Science metaphysics, all true expression manifests the divine nature. This toolkit helps discern what truly expresses God's qualities versus what represents their absence or distortion.</p>
+            
+            <div class="scripture-quote">
+                <p><strong>GOD.</strong> The great I AM; the all-knowing, all-seeing, all-acting, all-wise, all-loving, and eternal; Principle; Mind; Soul; Spirit; Life; Truth; Love; all substance; intelligence.</p>
+                <div class="scripture-citation">Science and Health with Key to the Scriptures, Mary Baker Eddy, p. 587:5</div>
+            </div>
+
+            <div class="seven-attributes">
+                <div class="attribute">Mind</div>
+                <div class="attribute">Truth</div>
+                <div class="attribute">Love</div>
+                <div class="attribute">Life</div>
+                <div class="attribute">Soul</div>
+                <div class="attribute">Spirit</div>
+                <div class="attribute">Principle</div>
+            </div>
+
+            <div class="spiritual-discernment">
+                <h4>Spiritual Discernment Process</h4>
+                <div class="discernment-grid">
+                    <div class="positive-expression">
+                        <h5>Positive Expressions</h5>
+                        <p>Manifestations of God's nature - these represent true reality and spiritual substance</p>
+                    </div>
+                    <div class="negative-expression">
+                        <h5>Negative Expressions</h5>
+                        <p>Absence or distortion of divine qualities - these point to what needs spiritual correction</p>
+                    </div>
+                </div>
+                <p style="margin-top: 1rem; text-align: center; font-weight: bold; color: #ffd700;">Recognition of negatives creates awareness for individual spiritual progress toward divine nature</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>What</h2>
+            <p>This toolkit provides a systematic approach to spiritual discernment based on Christian Science metaphysics. Analyze expressions to distinguish between what truly manifests divine nature and what represents error requiring correction.</p>
+            <p>All human endeavors can be examined through this lens - art, language, science, healing, governance - determining how they express or obscure divine qualities.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>Spiritual Discernment</h3>
+                    <p>Distinguish divine expressions from material misconceptions</p>
+                </div>
+                <div class="feature">
+                    <h3>Progress Tracking</h3>
+                    <p>Document spiritual growth toward greater divine expression</p>
+                </div>
+                <div class="feature">
+                    <h3>Research Foundation</h3>
+                    <p>Build comprehensive notes for deeper metaphysical study</p>
+                </div>
+                <div class="feature">
+                    <h3>Demonstration Aid</h3>
+                    <p>Support practical application of Christian Science principles</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Why</h2>
+            <p>Christian Science teaches that understanding the divine nature and its expressions leads to healing and spiritual progress. By systematically analyzing what truly expresses God versus what represents error, practitioners develop clearer spiritual discernment.</p>
+            <p>This process supports the fundamental Christian Science practice of replacing false beliefs with spiritual understanding, leading to demonstration of divine power in daily experience.</p>
+        </div>
+
+        <div class="section">
+            <h2>Who</h2>
+            <p>Designed for Christian Science students, practitioners, and anyone studying Mary Baker Eddy's teachings. The framework supports both individual spiritual development and group study of divine metaphysics.</p>
+            <p>All spiritual insights and progress tracking remain completely private - your spiritual work stays on your computer with no external sharing.</p>
+        </div>
+
+        <div class="section coming-soon">
+            <h2>Coming Soon - Spiritual Progress Rating Tool</h2>
+            <p>Quantitative assessment capabilities for tracking spiritual development:</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>Demonstration Tracking</h3>
+                    <p>Rate progress in expressing divine qualities</p>
+                </div>
+                <div class="feature">
+                    <h3>Healing Assessment</h3>
+                    <p>Measure advancement in spiritual understanding</p>
+                </div>
+                <div class="feature">
+                    <h3>Growth Visualization</h3>
+                    <p>Chart spiritual progress over time</p>
+                </div>
+                <div class="feature">
+                    <h3>Study Integration</h3>
+                    <p>Combine qualitative insights with measurable progress</p>
+                </div>
+            </div>
+
+            <div class="workflow">
+                <h3>Spiritual Development Workflow</h3>
+                <ol>
+                    <li><strong>Discern</strong> expressions using the Divine Analysis Editor</li>
+                    <li><strong>Measure</strong> spiritual progress with the Rating Tool</li>
+                    <li><strong>Demonstrate</strong> greater expression of divine nature in daily life</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="launch-section">
+            <a href="#" onclick="window.open(CURRENT_TOOL_URL, '_blank')" class="launch-btn">
+                Launch Divine Expression Editor
+            </a>
+            
+            <div class="url-display">
+                <span>Current Tool: </span><span id="currentUrl"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Display the current URL for easy reference
+        document.getElementById('currentUrl').textContent = CURRENT_TOOL_URL;
+    </script>
+</body>
+</html>
