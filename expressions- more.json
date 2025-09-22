@@ -1,0 +1,114 @@
+{
+  "Truth": {
+    "positive": [
+      "accuracy",
+      "authenticity",
+      "clarity",
+      "integrity"
+    ],
+    "negative": [
+      "confusion",
+      "deception",
+      "distortion",
+      {
+        "term": "falsehood",
+        "note": "The truth regarding error is, that error is not true, hence it is unreal. To prove scientifically the error or unreality of sin, you must first see the claim of sin, and then destroy it. Whereas, to prove scientifically the error or unreality of disease, you must mentally unsee the disease; then you will not feel it, and it is destroyed.\n(Science and Health with Key to the Scriptures, Mary Baker Eddy, p. 461:24)"
+      },
+      {
+        "term": "error",
+        "note": "The truth regarding error is, that error is not true, hence it is unreal. To prove scientifically the error or unreality of sin, you must first see the claim of sin, and then destroy it. Whereas, to prove scientifically the error or unreality of disease, you must mentally unsee the disease; then you will not feel it, and it is destroyed.\n(Science and Health with Key to the Scriptures, Mary Baker Eddy, p. 461:24)"
+      }
+    ]
+  },
+  "Love": {
+    "positive": [
+      "acceptance",
+      "compassion",
+      "empathy",
+      "kindness"
+    ],
+    "negative": [
+      "cruelty",
+      {
+        "term": "hatred",
+        "note": "test note"
+      },
+      "indifference",
+      "rejection"
+    ]
+  },
+  "Mind": {
+    "positive": [
+      "clarity",
+      "focus",
+      "understanding",
+      "wisdom"
+    ],
+    "negative": [
+      "confusion",
+      "distraction",
+      "ignorance",
+      "irrationality",
+      {
+        "term": "rrr",
+        "note": "now is the time fir all good men to come to the aid of rheir country"
+      }
+    ]
+  },
+  "Soul": {
+    "positive": [
+      "authenticity",
+      "inner peace",
+      "self-awareness",
+      "wholeness"
+    ],
+    "negative": [
+      "alienation",
+      "emptiness",
+      "fragmentation",
+      "self-doubt"
+    ]
+  },
+  "Spirit": {
+    "positive": [
+      "courage",
+      "creativity",
+      "enthusiasm",
+      "freedom"
+    ],
+    "negative": [
+      "apathy",
+      "fear",
+      "oppression",
+      "stagnation"
+    ]
+  },
+  "Principle": {
+    "positive": [
+      "accountability",
+      "honor",
+      "integrity",
+      "justice"
+    ],
+    "negative": [
+      "corruption",
+      "dishonor",
+      "injustice",
+      "irresponsibility"
+    ]
+  },
+  "Life": {
+    "positive": [
+      "abundance",
+      "growth",
+      "resilience",
+      "vitality"
+    ],
+    "negative": [
+      "decay",
+      "depletion",
+      "fragility",
+      "stagnation"
+    ]
+  }
+}

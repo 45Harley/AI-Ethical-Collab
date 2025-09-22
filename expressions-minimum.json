@@ -1,17 +1,29 @@
 {
   "Truth": {
     "positive": [
-      "truth"
+      {
+        "term": "truth",
+        "note": "The question, “What is Truth,” convulses the world. Many are ready to meet this inquiry with the assurance which comes of understanding; but more are blinded by their old illusions, and try to “give it pause.” “If the blind lead the blind, both shall fall into the ditch.” \n\nThe efforts of error to answer this question by some ology are vain. Spiritual rationality and free thought accompany approaching Science, and cannot be put down. They will emancipate humanity, ...\n(Science and Health with Key to the Scriptures, Mary Baker Eddy, p. 223:14–23 (to ,))"
+      }
     ],
     "negative": [
-      "lie",
-      "error",
+      {
+        "term": "lie",
+        "note": "In the phrase, “Deliver us from evil,” the original properly reads, “Deliver us from the evil one.” This reading strengthens our scientific apprehension of the petition, for Christian Science teaches us that “the evil one,” or one evil, is but another name for the first lie and all liars.\n(Science and Health with Key to the Scriptures, Mary Baker Eddy, p. 16:15)"
+      },
+      {
+        "term": "error",
+        "note": "Question. — What is error? \n\nAnswer. — Error is a supposition that pleasure and pain, that intelligence, substance, life, are existent in matter. Error is neither Mind nor one of Mind’s faculties. Error is the contradiction of Truth. Error is a belief without understanding. Error is unreal because untrue. It is that which seemeth to be and is not. If error were true, its truth would be error, and we should have a self-evident absurdity — namely, erroneous truth. Thus we should continue to lose the standard of Truth.\n(Science and Health with Key to the Scriptures, Mary Baker Eddy, p. 472:13–22)"
+      },
       "mistake"
     ]
   },
   "Love": {
     "positive": [
-      "Love"
+      {
+        "term": "Love",
+        "note": "The precise form of God must be of small importance in comparison with the sublime question, What is infinite Mind or divine Love?\n(Science and Health with Key to the Scriptures, Mary Baker Eddy, p. 256:16)"
+      }
     ],
     "negative": [
       "hatred"
@@ -22,13 +34,19 @@
       "understanding"
     ],
     "negative": [
-      "ignorance",
+      {
+        "term": "ignorance",
+        "note": "Ignorance of God is no longer the stepping-stone to faith. The only guarantee of obedience is a right apprehension of Him whom to know aright is Life eternal. Though empires fall, “the Lord shall reign forever.”\n(Science and Health with Key to the Scriptures, Mary Baker Eddy, p. vii:17)"
+      },
       "confusion"
     ]
   },
   "Soul": {
     "positive": [
-      "soulful"
+      {
+        "term": "soul",
+        "note": "Question. — What are spirits and souls? \n\nAnswer. — To human belief, they are personalities constituted of mind and matter, life and death, truth and error, good and evil; but these contrasting pairs of terms represent contraries, as Christian Science reveals, which neither dwell together nor assimilate. Truth is immortal; error is mortal. Truth is limitless; error is limited. Truth is intelligent; error is non-intelligent. Moreover, Truth is real, and error is unreal. This last statement contains the point you will most reluctantly admit, although first and last it is the most important to understand. ...\n\nScience reveals Spirit, Soul, as not in the body, and God as not in man but as reflected by man.\n(Science and Health with Key to the Scriptures, Mary Baker Eddy, pp. 466:7–18; 467:17–18)"
+      }
     ],
     "negative": [
       "enpty"
@@ -55,7 +73,11 @@
   },
   "Life": {
     "positive": [
-      "vitality"
+      "vitality",
+      {
+        "term": "life",
+        "note": "Question. — What is Life? \n\nAnswer. — Life is divine Principle, Mind, Soul, Spirit. Life is without beginning and without end. Eternity, not time, expresses the thought of Life, and time is no part of eternity. One ceases in proportion as the other is recognized. Time is finite; eternity is forever infinite. Life is neither in nor of matter. What is termed matter is unknown to Spirit, which includes in itself all substance and is Life eternal. Matter is a human concept. Life is divine Mind. Life is not limited. Death and finiteness are unknown to Life. If Life ever had a beginning, it would also have an ending.\n(Science and Health with Key to the Scriptures, Mary Baker Eddy, pp. 468:25–6)"
+      }
     ],
     "negative": [
       "death"
