@@ -11,7 +11,7 @@
       "deception",
       "distortion",
       {
-        "term": "falsehood",
+        "term": "click once to change",
         "note": "this is a note in lage window  for definitions, examples, whatever,  cut and paste,"
       }
     ]
@@ -26,7 +26,7 @@
     "negative": [
       "cruelty",
       {
-        "term": "hatred",
+        "term": "double click for note window",
         "note": "test note"
       },
       "indifference",
@@ -46,7 +46,7 @@
       "ignorance",
       "irrationality",
       {
-        "term": "rrr",
+        "term": "rrr  click x to   delete me",
         "note": "now is the time fir all good men to come to the aid of rheir country"
       }
     ]
