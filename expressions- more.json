@@ -11,12 +11,8 @@
       "deception",
       "distortion",
       {
-        "term": "falsehood",
-        "note": "The truth regarding error is, that error is not true, hence it is unreal. To prove scientifically the error or unreality of sin, you must first see the claim of sin, and then destroy it. Whereas, to prove scientifically the error or unreality of disease, you must mentally unsee the disease; then you will not feel it, and it is destroyed.\n(Science and Health with Key to the Scriptures, Mary Baker Eddy, p. 461:24)"
-      },
-      {
-        "term": "error",
-        "note": "The truth regarding error is, that error is not true, hence it is unreal. To prove scientifically the error or unreality of sin, you must first see the claim of sin, and then destroy it. Whereas, to prove scientifically the error or unreality of disease, you must mentally unsee the disease; then you will not feel it, and it is destroyed.\n(Science and Health with Key to the Scriptures, Mary Baker Eddy, p. 461:24)"
+        "term": "click once to change",
+        "note": "this is a note in lage window  for definitions, examples, whatever,  cut and paste,"
       }
     ]
   },
@@ -30,7 +26,7 @@
     "negative": [
       "cruelty",
       {
-        "term": "hatred",
+        "term": "double click for note window",
         "note": "test note"
       },
       "indifference",
@@ -50,7 +46,7 @@
       "ignorance",
       "irrationality",
       {
-        "term": "rrr",
+        "term": "rrr  click x to   delete me",
         "note": "now is the time fir all good men to come to the aid of rheir country"
       }
     ]
