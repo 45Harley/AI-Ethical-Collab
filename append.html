@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Append Ratings to Database</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #181818 0%, #232323 50%, #181818 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .title {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 8px rgba(255,255,255,0.08);
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: #a0a0a0;
+            opacity: 0.8;
+        }
+        .input-block {
+            margin: 1.5rem 0;
+            background: rgba(255,255,255,0.04);
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.6rem;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            flex: 1 1 230px;
+            min-width: 230px;
+        }
+        label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #90caf9;
+        }
+        input[type="file"] {
+            background: rgba(156,39,176,0.08);
+            border: 1px solid #9c27b0;
+            border-radius: 10px;
+            padding: 0.9rem;
+            color: #e0e0e0;
+            font-size: 1rem;
+            margin-top: 0.3rem;
+        }
+        .file-btn {
+            background: linear-gradient(135deg,#4fc3f7,#29b6f6);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 0.5rem 0;
+            box-shadow: 0 2px 12px rgba(79,195,247,0.13);
+            transition: background 0.2s;
+        }
+        .file-btn:hover {
+            background: linear-gradient(135deg,#29b6f6,#4fc3f7);
+        }
+        .summary-card {
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+        .summary-row {
+            display: flex;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+        .summary-val {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #4fc3f7;
+        }
+        .log-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .log-table th, .log-table td {
+            padding: 0.6rem 1rem;
+            text-align: left;
+        }
+        .log-table th {
+            background: rgba(156,39,176,0.18);
+            color: #fff;
+            font-weight: 600;
+        }
+        .log-table tr {
+            border-bottom: 1px solid rgba(255,255,255,0.09);
+        }
+        .log-table td {
+            font-size: 0.98rem;
+        }
+        .action-appended {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .action-duplicate {
+            color: #f44336;
+            font-weight: bold;
+        }
+        .action-error {
+            color: #ff9800;
+            font-weight: bold;
+        }
+        .download-btn {
+            background: linear-gradient(135deg,#4caf50,#45a049);
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem 1.8rem;
+            color: white;
+            font-size: 1.08rem;
+            cursor: pointer;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+            transition: background 0.2s;
+            box-shadow: 0 2px 12px rgba(76,175,80,0.18);
+        }
+        .download-btn:hover {
+            background: linear-gradient(135deg,#45a049,#4caf50);
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .title {
+                font-size: 1.4rem;
+            }
+            .input-block {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1 class="title">Append Ratings to Database</h1>
+        <p class="subtitle">Select 1 or more rating files to append them to the master database. Duplicates and errors will be logged.</p>
+    </div>
+
+    <div class="input-block">
+        <div class="input-group">
+            <label for="ratingFilesInput">Select Rating Files (.json)</label>
+            <input type="file" id="ratingFilesInput" multiple accept=".json">
+        </div>
+        <div class="input-group">
+            <label for="dbInput">Load Existing master-database.json (optional)</label>
+            <input type="file" id="dbInput" accept=".json">
+        </div>
+        <button class="file-btn" id="appendBtn">Append Ratings</button>
+    </div>
+
+    <div id="summaryArea" class="summary-card" style="display:none"></div>
+    <table id="logTable" class="log-table" style="display:none">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Date</th>
+                <th>SHA-256 Hash</th>
+                <th>Action</th>
+                <th>Error</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div id="downloadBtns" style="display:none;">
+        <button class="download-btn" id="downloadDbBtn">Download master-database.json</button>
+        <button class="download-btn" id="downloadLogBtn">Download append.log</button>
+    </div>
+</div>
+
+<script>
+// Helper for SHA-256 hashing
+async function sha256(input) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// UI references
+const ratingFilesInput = document.getElementById('ratingFilesInput');
+const dbInput = document.getElementById('dbInput');
+const appendBtn = document.getElementById('appendBtn');
+const summaryArea = document.getElementById('summaryArea');
+const logTable = document.getElementById('logTable');
+const logTbody = logTable.querySelector('tbody');
+const downloadBtns = document.getElementById('downloadBtns');
+const downloadDbBtn = document.getElementById('downloadDbBtn');
+const downloadLogBtn = document.getElementById('downloadLogBtn');
+
+// State
+let database = [];
+let logEntries = [];
+let dbLoaded = false;
+
+// Load existing master-database.json if selected
+dbInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+        try {
+            const json = JSON.parse(ev.target.result);
+            if (!Array.isArray(json)) throw new Error("Database file must be an array of rating objects.");
+            database = json;
+            dbLoaded = true;
+            alert("Loaded master-database.json with " + database.length + " entries.");
+        } catch (err) {
+            alert("Error loading database: " + err.message);
+            database = [];
+            dbLoaded = false;
+        }
+    };
+    reader.readAsText(file);
+});
+
+// Main append logic
+appendBtn.onclick = async function() {
+    const ratingFiles = ratingFilesInput.files;
+    if (!ratingFiles.length) {
+        alert("Please select one or more rating files.");
+        return;
+    }
+
+    // If no master-database.json loaded, create new
+    if (!dbLoaded) {
+        database = [];
+    }
+
+    // Build hash set for fast duplicate detection (do NOT include filename in hash!)
+    const dbHashes = new Set();
+    for (const entry of database) {
+        // Hash is based on object contents and timestamp only
+        const entryClone = Object.assign({}, entry);
+        delete entryClone.fileName; // Remove filename for hash
+        const base = JSON.stringify(entryClone) + (entryClone.timestamp || '');
+        const hash = await sha256(base);
+        dbHashes.add(hash);
+    }
+
+    // Reset log and summary
+    logEntries = [];
+    logTbody.innerHTML = '';
+    summaryArea.style.display = "none";
+    logTable.style.display = "none";
+    downloadBtns.style.display = "none";
+
+    let appendedCount = 0, duplicateCount = 0, errorCount = 0;
+    const startingCount = database.length;
+
+    // Process all files
+    for (const file of ratingFiles) {
+        let logEntry = {
+            filename: file.name,
+            date: new Date().toISOString(),
+            hash: "",
+            action: "",
+            error: ""
+        };
+        try {
+            const text = await file.text();
+            const obj = JSON.parse(text);
+
+            // Validate structure (presence only, not value)
+            if (!("Type" in obj) || !("objectName" in obj) || !("ratings" in obj)) {
+                throw new Error("Invalid rating file structure: missing Type, objectName, or ratings.");
+            }
+            obj.fileName = file.name; // Save source filename in object
+
+            // Hash for duplicate detection (ignore filename)
+            const objClone = Object.assign({}, obj);
+            delete objClone.fileName;
+            const base = JSON.stringify(objClone) + (objClone.timestamp || '');
+            const hash = await sha256(base);
+            logEntry.hash = hash;
+
+            if (dbHashes.has(hash)) {
+                logEntry.action = "duplicate (rejected)";
+                duplicateCount++;
+            } else {
+                database.push(obj);
+                dbHashes.add(hash);
+                logEntry.action = "appended";
+                appendedCount++;
+            }
+        } catch (err) {
+            logEntry.action = "error";
+            logEntry.error = err.message;
+            errorCount++;
+        }
+        logEntries.push(logEntry);
+    }
+
+    const finalCount = database.length;
+
+    // Summary display
+    summaryArea.innerHTML = `
+        <div class="summary-row">
+            <span class="summary-val">Starting DB Count: ${startingCount}</span>
+            <span class="summary-val">Appended: ${appendedCount}</span>
+            <span class="summary-val">Duplicates: ${duplicateCount}</span>
+            <span class="summary-val">Errors: ${errorCount}</span>
+            <span class="summary-val">Final DB Count: ${finalCount}</span>
+        </div>
+    `;
+    summaryArea.style.display = "flex";
+
+    // Log table
+    logTbody.innerHTML = "";
+    for (const entry of logEntries) {
+        const tr = document.createElement('tr');
+        let actionClass = "";
+        if (entry.action.startsWith("appended")) actionClass = "action-appended";
+        else if (entry.action.startsWith("duplicate")) actionClass = "action-duplicate";
+        else if (entry.action.startsWith("error")) actionClass = "action-error";
+        tr.innerHTML = `
+            <td>${entry.filename}</td>
+            <td>${entry.date}</td>
+            <td style="font-size:0.9em;">${entry.hash}</td>
+            <td class="${actionClass}">${entry.action}</td>
+            <td>${entry.error || ""}</td>
+        `;
+        logTbody.appendChild(tr);
+    }
+    logTable.style.display = "table";
+
+    // Download buttons
+    downloadBtns.style.display = "block";
+};
+
+// Download updated master-database.json
+downloadDbBtn.onclick = function() {
+    const blob = new Blob([JSON.stringify(database, null, 2)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = "master-database.json";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => document.body.removeChild(a), 100);
+};
+
+// Download append.log
+downloadLogBtn.onclick = function() {
+    const blob = new Blob([JSON.stringify(logEntries, null, 2)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = "append.log";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => document.body.removeChild(a), 100);
+};
+</script>
+</body>
+</html>
