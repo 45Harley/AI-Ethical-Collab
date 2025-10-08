@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expressions Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 300;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #a0a0a0;
+            opacity: 0.8;
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .principle-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .principle-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+            opacity: 0.7;
+        }
+
+        .principle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .principle-card[data-principle="Truth"] {
+            --accent-color: #4fc3f7;
+        }
+
+        .principle-card[data-principle="Love"] {
+            --accent-color: #e91e63;
+        }
+
+        .principle-card[data-principle="Mind"] {
+            --accent-color: #9c27b0;
+        }
+
+        .principle-card[data-principle="Soul"] {
+            --accent-color: #673ab7;
+        }
+
+        .principle-card[data-principle="Spirit"] {
+            --accent-color: #ff9800;
+        }
+
+        .principle-card[data-principle="Principle"] {
+            --accent-color: #4caf50;
+        }
+
+        .principle-card[data-principle="Life"] {
+            --accent-color: #f44336;
+        }
+
+        .principle-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .aspects {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .aspect {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .aspect-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .positive .aspect-title {
+            color: #4caf50;
+        }
+
+        .negative .aspect-title {
+            color: #f44336;
+        }
+
+        .tags {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            color: #e0e0e0;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tag.has-note {
+            border-color: rgba(255, 193, 7, 0.3);
+            background: rgba(255, 193, 7, 0.1);
+        }
+
+        .tag.has-note::after {
+            content: '📝';
+            font-size: 10px;
+            opacity: 0.7;
+            margin-left: 0.3rem;
+        }
+
+        .tag:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .tag.highlight {
+            background: rgba(255, 215, 0, 0.3);
+            border-color: #ffd700;
+            color: #ffd700;
+            font-weight: bold;
+            animation: blink 1.5s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .tag.editing {
+            background: rgba(33, 150, 243, 0.3);
+            border-color: #2196f3;
+            color: #2196f3;
+            padding: 0;
+        }
+
+        .tag .delete-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .tag:hover .delete-btn {
+            display: flex;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+            box-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .note-modal {
+            background: rgba(30, 30, 30, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            width: 600px;
+            height: 500px;
+            max-width: 90vw;
+            max-height: 80vh;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            resize: both;
+            overflow: hidden;
+            min-width: 400px;
+            min-height: 300px;
+        }
+
+        .modal-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px 16px 0 0;
+            flex-shrink: 0;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .modal-subtitle {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            margin: 0.5rem 0 0 0;
+        }
+
+        .modal-content {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .note-textarea-large {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            padding: 1rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+            min-height: 200px;
+        }
+
+        .note-textarea-large::placeholder {
+            color: #90caf9;
+        }
+
+        .note-textarea-large:focus {
+            border-color: #2196f3;
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .modal-status {
+            font-size: 0.8rem;
+            color: #a0a0a0;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn.primary {
+            background: #4caf50;
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background: #45a049;
+        }
+
+        .modal-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .add-term-btn {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px dashed rgba(76, 175, 80, 0.5);
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            color: #4caf50;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            user-select: none;
+        }
+
+        .add-term-btn:hover {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4caf50;
+        }
+
+        .term-input {
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid #2196f3;
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            color: #ffffff;
+            min-width: 100px;
+            outline: none;
+        }
+
+        .term-input::placeholder {
+            color: #90caf9;
+        }
+
+        .save-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            z-index: 100;
+            display: none;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .save-btn.visible {
+            display: block;
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            color: #ffffff;
+            font-size: 1rem;
+            width: 300px;
+            max-width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: #a0a0a0;
+        }
+
+        .sort-btn {
+            background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+            border: none;
+            border-radius: 25px;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+            margin-left: 1rem;
+        }
+
+        .sort-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4);
+        }
+
+        .sort-btn:active {
+            transform: translateY(0);
+        }
+
+        @keyframes blink {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.7; 
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                max-height: 200px;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .principles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .aspects {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">What is God?</h1>
+            <p class="subtitle">Load and explore expression data</p>
+        </div>
+
+        <div class="file-input-container" id="fileInputContainer" style="text-align: center; margin-bottom: 2rem;">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                <!-- Preset buttons on the left -->
+                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                    <button onclick="loadPresetJSON('expressions-more.json')" style="background: linear-gradient(135deg, #9c27b0, #7b1fa2); border: none; border-radius: 25px; padding: 1rem 2rem; color: white; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);">
+                        Load larger Dataset
+                    </button>
+                    <button onclick="loadPresetJSON('expressions-minimum.json')" style="background: linear-gradient(135deg, #ff9800, #f57c00); border: none; border-radius: 25px; padding: 1rem 2rem; color: white; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);">
+                        Load Basic Dataset
+                    </button>
+                </div>
+                
+                <!-- Upload button on the right -->
+                <div>
+                    <input type="file" id="fileInput" accept=".json" style="display: none;">
+                    <button onclick="document.getElementById('fileInput').click()" style="background: linear-gradient(135deg, #4fc3f7, #29b6f6); border: none; border-radius: 25px; padding: 1rem 2rem; color: white; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);">
+                        Choose your own File
+                    </button>
+                </div>
+            </div>
+            <p style="margin-top: 1rem; color: #a0a0a0; font-size: 0.9rem;">Select a preset dataset or upload your own JSON file</p>
+        </div>
+
+        <button class="save-btn" id="saveBtn">
+            💾 Save JSON
+        </button>
+
+        <div class="search-container" id="searchContainer" style="display: none;">
+            <input type="text" class="search-input" placeholder="Search terms..." id="searchInput">
+            <button class="sort-btn" id="sortBtn" onclick="sortAllTerms()">Sort A-Z</button>
+        </div>
+
+        <div class="principles-grid" id="principlesGrid">
+            <!-- Content will be dynamically generated after file load -->
+        </div>
+
+        <!-- Note Modal -->
+        <div class="modal-overlay" id="noteModal">
+            <div class="note-modal">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalTitle">Note for Term</h3>
+                    <p class="modal-subtitle" id="modalSubtitle">Category • Type</p>
+                </div>
+                <div class="modal-content">
+                    <textarea class="note-textarea-large" id="modalTextarea" placeholder="Write your note here...
+
+You can write substantial explanatory content, multiple paragraphs, examples, and detailed analysis.
+
+Use this space for research notes, insights, connections, and in-depth explanations."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-status" id="modalStatus">Ready</div>
+                    <div class="modal-buttons">
+                        <button class="modal-btn secondary" onclick="closeNoteModal(false)">Cancel</button>
+                        <button class="modal-btn primary" onclick="closeNoteModal(true)">Save to JSON</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let data = {};
+        let isModified = false;
+        let currentNoteData = null;
+        let draftTimer = null;
+        let originalNoteContent = '';
+
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('fileInput').addEventListener('change', loadJSONFile);
+            document.getElementById('saveBtn').addEventListener('click', downloadModifiedJSON);
+            
+            // Add hover effects for preset buttons
+            const presetButtons = document.querySelectorAll('button[onclick^="loadPresetJSON"]');
+            presetButtons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Modal event listeners
+            document.getElementById('noteModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    checkAndCloseModal();
+                }
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && document.getElementById('noteModal').classList.contains('active')) {
+                    checkAndCloseModal();
+                }
+            });
+            
+            // Auto-save draft while typing
+            document.getElementById('modalTextarea').addEventListener('input', function() {
+                updateModalStatus('Editing...');
+                clearTimeout(draftTimer);
+                draftTimer = setTimeout(() => {
+                    updateModalStatus('Draft saved');
+                }, 1000);
+            });
+        });
+
+        function loadPresetJSON(filename) {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            // Show loading state
+            button.textContent = 'Loading...';
+            button.disabled = true;
+            
+            fetch(`https://45harley.github.io/AI-Ethical-Collab/${filename}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to load ${filename}`);
+                    }
+                    return response.json();
+                })
+                .then(jsonData => {
+                    if (!isValidJSONStructure(jsonData)) {
+                        throw new Error('Invalid JSON structure in preset file');
+                    }
+                    
+                    data = jsonData;
+                    isModified = false;
+                    
+                    // Update UI
+                    document.querySelector('.title').textContent = 'God is ...';
+                    document.querySelector('.subtitle').textContent = `Loaded ${Object.keys(data).length} categories with ${getTotalTerms()} terms - Click to edit, double-click for notes`;
+                    
+                    // Show controls and hide file input
+                    document.getElementById('searchContainer').style.display = 'block';
+                    document.getElementById('fileInputContainer').style.display = 'none';
+                    
+                    // Clear search and render
+                    document.getElementById('searchInput').value = '';
+                    setupSearch();
+                    renderPrinciples();
+                    
+                    showMessage(`${originalText} loaded successfully!`, 'success');
+                })
+                .catch(error => {
+                    console.error('Error loading preset:', error);
+                    showMessage(`Error loading preset: ${error.message}`, 'error');
+                })
+                .finally(() => {
+                    // Restore button state
+                    button.textContent = originalText;
+                    button.disabled = false;
+                });
+        }
+
+        function renderPrinciples(searchTerm = '') {
+            const grid = document.getElementById('principlesGrid');
+            grid.innerHTML = '';
+            
+            if (Object.keys(data).length === 0) {
+                grid.innerHTML = '<p style="text-align: center; color: #a0a0a0; grid-column: 1 / -1;">No data loaded. Please select a JSON file.</p>';
+                return;
+            }
+            
+            Object.entries(data).forEach(([principleName, principleData]) => {
+                if (searchTerm === '' || 
+                    principleName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    findTermMatch(principleData.positive, searchTerm) ||
+                    findTermMatch(principleData.negative, searchTerm)) {
+                    
+                    const card = createPrincipleCard(principleName, principleData, searchTerm);
+                    grid.appendChild(card);
+                }
+            });
+        }
+
+        function findTermMatch(termArray, searchTerm) {
+            return termArray.some(item => {
+                const termText = typeof item === 'string' ? item : item.term;
+                return termText.toLowerCase().includes(searchTerm.toLowerCase());
+            });
+        }
+
+        function createPrincipleCard(principleName, principleData, searchTerm = '') {
+            const card = document.createElement('div');
+            card.className = 'principle-card';
+            card.setAttribute('data-principle', principleName);
+            
+            // Create the basic structure
+            card.innerHTML = `
+                <h2 class="principle-title">${principleName}</h2>
+                <div class="aspects">
+                    <div class="aspect positive">
+                        <div class="aspect-title">Positive (${principleData.positive.length})</div>
+                        <div class="tags"></div>
+                    </div>
+                    <div class="aspect negative">
+                        <div class="aspect-title">Negative (${principleData.negative.length})</div>
+                        <div class="tags"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Add positive terms
+            const positiveContainer = card.querySelector('.positive .tags');
+            principleData.positive.forEach((term, index) => {
+                const tagContainer = createTagElement(term, principleName, 'positive', index, searchTerm);
+                positiveContainer.appendChild(tagContainer);
+            });
+            
+            // Add positive add button
+            const positiveAddBtn = document.createElement('span');
+            positiveAddBtn.className = 'add-term-btn';
+            positiveAddBtn.textContent = '+ Add';
+            positiveAddBtn.onclick = () => addNewTerm(principleName, 'positive');
+            positiveContainer.appendChild(positiveAddBtn);
+            
+            // Add negative terms
+            const negativeContainer = card.querySelector('.negative .tags');
+            principleData.negative.forEach((term, index) => {
+                const tagContainer = createTagElement(term, principleName, 'negative', index, searchTerm);
+                negativeContainer.appendChild(tagContainer);
+            });
+            
+            // Add negative add button
+            const negativeAddBtn = document.createElement('span');
+            negativeAddBtn.className = 'add-term-btn';
+            negativeAddBtn.textContent = '+ Add';
+            negativeAddBtn.onclick = () => addNewTerm(principleName, 'negative');
+            negativeContainer.appendChild(negativeAddBtn);
+            
+            return card;
+        }
+
+        function createTagElement(termData, category, type, index, searchTerm) {
+            const isObject = typeof termData === 'object';
+            const termText = isObject ? termData.term : termData;
+            const noteText = isObject ? termData.note || '' : '';
+            
+            const container = document.createElement('div');
+            container.className = 'tag-container';
+            
+            const span = document.createElement('span');
+            span.className = 'tag';
+            if (noteText) {
+                span.classList.add('has-note');
+            }
+            span.textContent = termText;
+            
+            // Add highlight if matches search
+            if (searchTerm && termText.toLowerCase().includes(searchTerm.toLowerCase())) {
+                span.classList.add('highlight');
+            }
+            
+            // Create delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = '×';
+            deleteBtn.onclick = (e) => {
+                e.stopPropagation();
+                if (confirm(`Delete "${termText}"?`)) {
+                    data[category][type].splice(index, 1);
+                    markAsModified();
+                    renderPrinciples(document.getElementById('searchInput').value);
+                }
+            };
+            span.appendChild(deleteBtn);
+            
+            // Add click handlers
+            let clickTimeout = null;
+            let clickCount = 0;
+            
+            span.onclick = (e) => {
+                if (e.target === deleteBtn) return;
+                
+                clickCount++;
+                
+                if (clickCount === 1) {
+                    clickTimeout = setTimeout(() => {
+                        // Single click - edit term
+                        editTerm(span, category, type, index, termText);
+                        clickCount = 0;
+                    }, 250);
+                } else if (clickCount === 2) {
+                    // Double click - open note modal
+                    clearTimeout(clickTimeout);
+                    clickCount = 0;
+                    openNoteModal(termText, noteText, category, type, index);
+                }
+            };
+            
+            container.appendChild(span);
+            
+            return container;
+        }
+
+        function openNoteModal(termText, noteText, category, type, index) {
+            currentNoteData = { category, type, index, termText };
+            originalNoteContent = noteText;
+            
+            document.getElementById('modalTitle').textContent = `Note for "${termText}"`;
+            document.getElementById('modalSubtitle').textContent = `${category} • ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+            document.getElementById('modalTextarea').value = noteText;
+            document.getElementById('noteModal').classList.add('active');
+            
+            updateModalStatus('Ready');
+            document.getElementById('modalTextarea').focus();
+        }
+
+        function closeNoteModal(save) {
+            const textarea = document.getElementById('modalTextarea');
+            const newContent = textarea.value.trim();
+            const hasChanges = newContent !== originalNoteContent;
+            
+            if (save && hasChanges) {
+                saveNoteToData(newContent);
+            } else if (!save && hasChanges) {
+                if (!confirm('You have unsaved changes. Are you sure you want to close without saving?')) {
+                    return;
+                }
+            }
+            
+            document.getElementById('noteModal').classList.remove('active');
+            currentNoteData = null;
+            originalNoteContent = '';
+            clearTimeout(draftTimer);
+        }
+
+        function checkAndCloseModal() {
+            const textarea = document.getElementById('modalTextarea');
+            const newContent = textarea.value.trim();
+            const hasChanges = newContent !== originalNoteContent;
+            
+            if (hasChanges) {
+                const result = confirm('Save changes to JSON?');
+                closeNoteModal(result);
+            } else {
+                closeNoteModal(false);
+            }
+        }
+
+        function saveNoteToData(noteContent) {
+            if (!currentNoteData) return;
+            
+            const { category, type, index, termText } = currentNoteData;
+            
+            if (noteContent === '') {
+                // Delete note - convert back to string
+                data[category][type][index] = termText;
+            } else {
+                // Save note - convert to object
+                data[category][type][index] = {
+                    term: termText,
+                    note: noteContent
+                };
+            }
+            
+            markAsModified();
+            renderPrinciples(document.getElementById('searchInput').value);
+            updateModalStatus('Saved to JSON');
+        }
+
+        function updateModalStatus(message) {
+            document.getElementById('modalStatus').textContent = message;
+        }
+
+        function sortAllTerms() {
+            // Sort all positive and negative arrays in all categories
+            Object.keys(data).forEach(category => {
+                // Sort positive terms
+                data[category].positive.sort((a, b) => {
+                    const termA = (typeof a === 'string' ? a : a.term).toLowerCase();
+                    const termB = (typeof b === 'string' ? b : b.term).toLowerCase();
+                    return termA.localeCompare(termB);
+                });
+                
+                // Sort negative terms
+                data[category].negative.sort((a, b) => {
+                    const termA = (typeof a === 'string' ? a : a.term).toLowerCase();
+                    const termB = (typeof b === 'string' ? b : b.term).toLowerCase();
+                    return termA.localeCompare(termB);
+                });
+            });
+            
+            markAsModified();
+            renderPrinciples(document.getElementById('searchInput').value);
+            showMessage('All terms sorted alphabetically!', 'success');
+        }
+
+        function editTerm(element, category, type, index, currentTerm) {
+            if (element.classList.contains('editing')) return;
+            
+            element.classList.add('editing');
+            const deleteBtn = element.querySelector('.delete-btn');
+            if (deleteBtn) deleteBtn.style.display = 'none';
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'term-input';
+            input.value = currentTerm;
+            input.style.width = Math.max(100, currentTerm.length * 8) + 'px';
+            
+            element.innerHTML = '';
+            element.appendChild(input);
+            input.focus();
+            input.select();
+            
+            let hasProcessed = false;
+            
+            const saveTerm = () => {
+                if (hasProcessed) return;
+                hasProcessed = true;
+                
+                const newTerm = input.value.trim();
+                if (newTerm && newTerm !== currentTerm) {
+                    // Update the term while preserving any note
+                    const currentData = data[category][type][index];
+                    if (typeof currentData === 'object') {
+                        currentData.term = newTerm;
+                    } else {
+                        data[category][type][index] = newTerm;
+                    }
+                    markAsModified();
+                }
+                
+                setTimeout(() => {
+                    const currentSearch = document.getElementById('searchInput').value;
+                    renderPrinciples(currentSearch);
+                }, 10);
+            };
+            
+            const cancelEdit = () => {
+                if (hasProcessed) return;
+                hasProcessed = true;
+                
+                setTimeout(() => {
+                    const currentSearch = document.getElementById('searchInput').value;
+                    renderPrinciples(currentSearch);
+                }, 10);
+            };
+            
+            input.addEventListener('blur', saveTerm, { once: true });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    saveTerm();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    cancelEdit();
+                }
+            });
+        }
+
+        function addNewTerm(category, type) {
+            const containers = document.querySelectorAll('.tags');
+            let targetContainer = null;
+            
+            containers.forEach(container => {
+                const aspect = container.closest('.aspect');
+                const card = container.closest('.principle-card');
+                const cardPrinciple = card.getAttribute('data-principle');
+                const isPositive = aspect.classList.contains('positive');
+                
+                if (cardPrinciple === category && 
+                    ((type === 'positive' && isPositive) || (type === 'negative' && !isPositive))) {
+                    targetContainer = container;
+                }
+            });
+            
+            if (!targetContainer) return;
+            
+            const existingInput = targetContainer.querySelector('.term-input');
+            if (existingInput) {
+                existingInput.focus();
+                return;
+            }
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'term-input';
+            input.placeholder = 'Enter new term...';
+            input.style.width = '120px';
+            input.style.margin = '0.2rem';
+            
+            const addButton = targetContainer.querySelector('.add-term-btn');
+            targetContainer.insertBefore(input, addButton);
+            input.focus();
+            
+            let hasProcessed = false;
+            
+            const saveTerm = () => {
+                if (hasProcessed) return;
+                hasProcessed = true;
+                
+                const newTerm = input.value.trim();
+                
+                if (input.parentNode) {
+                    input.parentNode.removeChild(input);
+                }
+                
+                if (newTerm) {
+                    const termExists = data[category][type].some(item => {
+                        const termText = typeof item === 'string' ? item : item.term;
+                        return termText === newTerm;
+                    });
+                    
+                    if (!termExists) {
+                        data[category][type].push(newTerm);
+                        markAsModified();
+                        
+                        setTimeout(() => {
+                            const currentSearch = document.getElementById('searchInput').value;
+                            renderPrinciples(currentSearch);
+                        }, 10);
+                    }
+                }
+            };
+            
+            const cancelAdd = () => {
+                if (hasProcessed) return;
+                hasProcessed = true;
+                
+                if (input.parentNode) {
+                    input.parentNode.removeChild(input);
+                }
+            };
+            
+            input.addEventListener('blur', saveTerm, { once: true });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    saveTerm();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    cancelAdd();
+                }
+            });
+        }
+
+        function markAsModified() {
+            isModified = true;
+            document.getElementById('saveBtn').classList.add('visible');
+        }
+
+        function downloadModifiedJSON() {
+            const jsonString = JSON.stringify(data, null, 2);
+            const filename = (document.querySelector('.title').textContent || 'data') + '_modified.json';
+            
+            try {
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.style.display = 'none';
+                
+                document.body.appendChild(a);
+                a.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                showMessage('File download started! Check your Downloads folder.', 'success');
+                
+            } catch (error) {
+                console.error('Download failed:', error);
+                fallbackSaveMethod(jsonString, filename);
+            }
+            
+            isModified = false;
+            document.getElementById('saveBtn').classList.remove('visible');
+        }
+        
+        function fallbackSaveMethod(jsonString, filename) {
+            const newWindow = window.open('', '_blank');
+            if (newWindow) {
+                const htmlContent = `
+                    <html>
+                        <head>
+                            <title>Save JSON - ${filename}</title>
+                            <style>
+                                body { 
+                                    font-family: 'Courier New', monospace; 
+                                    margin: 20px; 
+                                    background: #1a1a1a; 
+                                    color: #e0e0e0; 
+                                }
+                                .header { 
+                                    background: #333; 
+                                    padding: 15px; 
+                                    border-radius: 8px; 
+                                    margin-bottom: 20px;
+                                }
+                                .json-content { 
+                                    background: #2a2a2a; 
+                                    padding: 20px; 
+                                    border-radius: 8px; 
+                                    white-space: pre-wrap; 
+                                    word-wrap: break-word;
+                                    border: 1px solid #444;
+                                }
+                                .save-btn {
+                                    background: #4caf50;
+                                    color: white;
+                                    border: none;
+                                    padding: 10px 20px;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    margin-right: 10px;
+                                }
+                                .save-btn:hover { background: #45a049; }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="header">
+                                <h2>💾 Save Your Modified JSON</h2>
+                                <p><strong>Filename:</strong> ${filename}</p>
+                                <button class="save-btn" onclick="selectAndCopy()">📋 Select All & Copy</button>
+                                <button class="save-btn" onclick="downloadFile()">💾 Download File</button>
+                                <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
+                                    Method 1: Click "Select All & Copy", then paste into a text editor and save as .json<br>
+                                    Method 2: Click "Download File" (if your browser allows it)<br>
+                                    Method 3: Right-click in the JSON area below → "Save As"
+                                </p>
+                            </div>
+                            <div class="json-content" id="jsonContent">${jsonString.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                            <script>
+                                const jsonData = ${JSON.stringify(jsonString)};
+                                
+                                function selectAndCopy() {
+                                    const content = document.getElementById('jsonContent');
+                                    const range = document.createRange();
+                                    range.selectNode(content);
+                                    window.getSelection().removeAllRanges();
+                                    window.getSelection().addRange(range);
+                                    
+                                    try {
+                                        document.execCommand('copy');
+                                        alert('JSON copied to clipboard! Paste it into a text editor and save as .json');
+                                    } catch (err) {
+                                        alert('Copy failed. Please manually select the text and copy it.');
+                                    }
+                                }
+                                
+                                function downloadFile() {
+                                    try {
+                                        const blob = new Blob([jsonData], { type: 'application/json' });
+                                        const url = URL.createObjectURL(blob);
+                                        const a = document.createElement('a');
+                                        a.href = url;
+                                        a.download = '${filename}';
+                                        a.click();
+                                        URL.revokeObjectURL(url);
+                                    } catch (error) {
+                                        alert('Download failed. Please use the copy method or right-click to save.');
+                                    }
+                                }
+                            <\/script>
+                        </body>
+                    </html>
+                `;
+                
+                newWindow.document.write(htmlContent);
+                newWindow.document.close();
+            } else {
+                alert(
+                    'Download failed and popup was blocked.\n\n' +
+                    'To save your JSON:\n' +
+                    '1. Press F12 to open Developer Tools\n' +
+                    '2. Go to Console tab\n' +
+                    '3. Type: console.log(JSON.stringify(window.data, null, 2))\n' +
+                    '4. Copy the output and save as .json file'
+                );
+            }
+        }
+        
+        function showMessage(message, type = 'info') {
+            const existingMsg = document.querySelector('.message-popup');
+            if (existingMsg) existingMsg.remove();
+            
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message-popup';
+            msgDiv.textContent = message;
+            msgDiv.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: ${type === 'success' ? '#4caf50' : '#2196f3'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 6px;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                font-size: 14px;
+                max-width: 300px;
+            `;
+            
+            document.body.appendChild(msgDiv);
+            
+            setTimeout(() => {
+                if (msgDiv.parentNode) {
+                    msgDiv.remove();
+                }
+            }, 4000);
+        }
+
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.oninput = (e) => {
+                renderPrinciples(e.target.value);
+            };
+        }
+
+        function loadJSONFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file first.');
+                return;
+            }
+            
+            if (file.type !== 'application/json') {
+                alert('Please select a JSON file.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const jsonData = JSON.parse(e.target.result);
+                    
+                    if (!isValidJSONStructure(jsonData)) {
+                        alert('Invalid JSON structure. Expected format:\n{\n  "Category": {\n    "positive": ["term1", "term2"],\n    "negative": ["term3", "term4"]\n  }\n}');
+                        return;
+                    }
+                    
+                    data = jsonData;
+                    isModified = false;
+                    
+                    document.querySelector('.title').textContent = file.name.replace('.json', '');
+                    document.querySelector('.subtitle').textContent = `Loaded ${Object.keys(data).length} categories with ${getTotalTerms()} terms - Click to edit, double-click for notes`;
+                    
+                    document.getElementById('searchContainer').style.display = 'block';
+                    document.getElementById('fileInputContainer').style.display = 'none';
+                    
+                    document.getElementById('searchInput').value = '';
+                    setupSearch();
+                    renderPrinciples();
+                    
+                } catch (error) {
+                    alert('Error parsing JSON file: ' + error.message);
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+
+        function isValidJSONStructure(jsonData) {
+            if (typeof jsonData !== 'object' || jsonData === null) return false;
+            
+            for (const [key, value] of Object.entries(jsonData)) {
+                if (typeof value !== 'object' || value === null) return false;
+                if (!Array.isArray(value.positive) || !Array.isArray(value.negative)) return false;
+                
+                // Validate that array items are either strings or objects with term/note
+                const validateArray = (arr) => {
+                    return arr.every(item => {
+                        if (typeof item === 'string') return true;
+                        if (typeof item === 'object' && item !== null) {
+                            return typeof item.term === 'string';
+                        }
+                        return false;
+                    });
+                };
+                
+                if (!validateArray(value.positive) || !validateArray(value.negative)) return false;
+            }
+            
+            return true;
+        }
+
+        function getTotalTerms() {
+            return Object.values(data).reduce((total, category) => {
+                return total + category.positive.length + category.negative.length;
+            }, 0);
+        }
+
+        // Initialize
+        renderPrinciples();
+    </script>
+</body>
+</html>
