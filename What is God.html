@@ -297,6 +297,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            min-height: 0;
         }
 
         .note-textarea-large {
@@ -311,7 +312,9 @@
             line-height: 1.5;
             resize: none;
             outline: none;
-            min-height: 200px;
+            overflow-y: auto;
+            min-height: 0;
+            width: 100%;
         }
 
         .note-textarea-large::placeholder {
@@ -827,12 +830,17 @@ Use this space for research notes, insights, connections, and in-depth explanati
             document.getElementById('noteModal').classList.add('active');
             
             updateModalStatus('Ready');
-            document.getElementById('modalTextarea').focus();
+            
+            // FIX 1: Set cursor to top of textarea
+            const textarea = document.getElementById('modalTextarea');
+            textarea.focus();
+            textarea.setSelectionRange(0, 0);
+            textarea.scrollTop = 0;
         }
 
         function closeNoteModal(save) {
             const textarea = document.getElementById('modalTextarea');
-            const newContent = textarea.value.trim();
+            const newContent = textarea.value;  // FIX 2: Removed .trim() to preserve spaces
             const hasChanges = newContent !== originalNoteContent;
             
             if (save && hasChanges) {
@@ -851,7 +859,7 @@ Use this space for research notes, insights, connections, and in-depth explanati
 
         function checkAndCloseModal() {
             const textarea = document.getElementById('modalTextarea');
-            const newContent = textarea.value.trim();
+            const newContent = textarea.value;  // FIX 2: Removed .trim() to preserve spaces
             const hasChanges = newContent !== originalNoteContent;
             
             if (hasChanges) {
@@ -867,11 +875,12 @@ Use this space for research notes, insights, connections, and in-depth explanati
             
             const { category, type, index, termText } = currentNoteData;
             
-            if (noteContent === '') {
+            // FIX 2: Only trim for empty check, but save original content with spaces
+            if (noteContent.trim() === '') {
                 // Delete note - convert back to string
                 data[category][type][index] = termText;
             } else {
-                // Save note - convert to object
+                // Save note - convert to object, preserving all spaces
                 data[category][type][index] = {
                     term: termText,
                     note: noteContent
